@@ -16,7 +16,7 @@ Executa, em sequência:
 Com ``--modelo-ner <pasta>``, gera também submission_bert.csv: a variante
 principal acrescida dos spans do rotulador BERTimbau, pelo critério de fusão
 estrito de ml/fundir.py. Requer torch e transformers (requirements-ml.txt) e
-os pesos treinados (ver ml/README.md).
+os pesos treinados, anexados ao Release v1.0 do repositório (ver ml/README.md).
 
 A variante principal é submission.csv. A variante difusas existe porque a
 política de anotação mudou durante o desafio (ver README, "Política de

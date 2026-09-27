@@ -135,7 +135,7 @@ Duas conclusões:
 
 A submissão principal permanece determinística, porque a variante com o
 BERTimbau acrescenta dependências (torch, transformers) e os pesos treinados,
-que não são versionados, à verificação de reprodutibilidade, sem ganho
+distribuídos à parte, à verificação de reprodutibilidade, sem ganho
 esperado enquanto as regras estiverem completas. Ela está disponível como
 `submission_bert.csv` (`gerar_submissao.py --modelo-ner`).
 
@@ -163,7 +163,11 @@ python ml/experimento_fusao.py pred dados/goldenset.csv dados/txt indice.json da
 Os spans do modelo nos corpora de validação estão em `ml/resultados/ner_s7.json`
 e `ner_s424242.json`, e as tabelas, em `ml/resultados/fusao_estrita.json`.
 
-Os pesos treinados (433 MB) não são versionados. As métricas do treino e os
+Os pesos treinados (433 MB) não são versionados: estão anexados ao
+[Release v1.0](https://github.com/sunriseinkyoto/caca-alucinacoes/releases/tag/v1.0) como `modelo_ner.zip`, com o SHA-256 de
+`model.safetensors` nas notas do Release. Extraído na raiz do repositório, o
+arquivo cria a pasta `modelo_ner/`, usada por
+`python gerar_submissao.py --modelo-ner modelo_ner`. As métricas do treino e os
 spans produzidos estão em `ml/resultados/`.
 
 ## 3. Calibração aprendida

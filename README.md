@@ -89,8 +89,19 @@ saida/
 ```
 
 A variante `submission_bert.csv` só é gerada com `--modelo-ner` e requer as
-dependências de `requirements-ml.txt` e os pesos treinados (ver
-[`ml/README.md`](ml/README.md)).
+dependências de `requirements-ml.txt` e os pesos treinados do rotulador. Os
+pesos (433 MB) não cabem no repositório e são distribuídos como anexo do
+[Release v1.0](https://github.com/sunriseinkyoto/caca-alucinacoes/releases/tag/v1.0), no arquivo `modelo_ner.zip`:
+
+```bash
+pip install -r requirements-ml.txt
+# extrair modelo_ner.zip na raiz do repositório, criando modelo_ner/
+python gerar_submissao.py --modelo-ner modelo_ner
+```
+
+O SHA-256 de `modelo_ner/model.safetensors` está nas notas do Release e permite
+confirmar que os pesos são os mesmos usados nos resultados publicados. Detalhes
+do treino em [`ml/README.md`](ml/README.md).
 
 Para executar a bateria completa de testes (cerca de 4 minutos):
 
