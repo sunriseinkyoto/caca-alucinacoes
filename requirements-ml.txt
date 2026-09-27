@@ -1,0 +1,5 @@
+# Componente experimental (ml/); não é necessário para gerar a submissão
+-r requirements.txt
+scikit-learn>=1.3.0
+torch>=2.0.0
+transformers>=4.40.0

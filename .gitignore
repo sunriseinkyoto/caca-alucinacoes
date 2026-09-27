@@ -1,0 +1,20 @@
+# material da organização (ver dados/LEIA-ME.md)
+dados/*
+!dados/LEIA-ME.md
+
+# saídas geradas
+saida/
+pred*/
+ml/dados/
+modelo_ner/
+
+# pesos de modelo
+*.bin
+*.safetensors
+*.h5
+*.msgpack
+
+# Python
+__pycache__/
+*.pyc
+

@@ -1,0 +1,6 @@
+# Geração da submissão
+regex>=2023.0.0
+
+# Avaliação com a métrica oficial (kaggle_metric.py) e bateria de testes
+pandas>=2.0.0
+numpy>=1.24.0

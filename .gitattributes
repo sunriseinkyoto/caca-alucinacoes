@@ -1,0 +1,6 @@
+# Checkout idêntico byte a byte em qualquer sistema operacional: os artefatos
+# versionados (índice, submissão) são conferidos por igualdade de bytes.
+* text=auto eol=lf
+*.csv -text
+*.pdf binary
+*.png binary

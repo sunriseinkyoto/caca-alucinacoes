@@ -1,0 +1,13 @@
+{
+ "congelar": 0,
+ "dispositivo": "cpu",
+ "epocas": 3,
+ "janelas_treino": 1736,
+ "lote": 16,
+ "lr": 3e-05,
+ "max_len": 256,
+ "melhor_f1_span_valid": 0.9283,
+ "minutos": 70.5,
+ "modelo_base": "..\\modelos\\bertimbau-base",
+ "seed": 13
+}

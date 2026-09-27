@@ -1,0 +1,137 @@
+{
+ "criterio_estrito": "ml/fundir.py (padrão): descarta spans que sobreponham, em qualquer medida, uma citação das regras e spans sem identificador nem forma de citação vaga; confiança do resolvedor no modo maxima",
+ "criterio_original": "--fusao-antiga: descarta apenas spans com IoU >= 0,5 ou contidos numa citação das regras",
+ "nota": "Spans do dev (ner_dev.json) obtidos sobre o texto da versão final (v3). Uma medição anterior usou, por engano, o texto da versão v2 em três documentos (gen_n1_003, gen_n1_006, gen_n1_010), deslocando os spans em 9 a 13 caracteres; os números dela (P=0,9689, R=0,9740, -0,0141) foram descartados. Os corpora sintéticos (sementes 7 e 424242) não participaram do treino (1001, 1002, 2001) nem do desenho do critério estrito.",
+ "desenvolvimento": {
+  "documentos": 26,
+  "citacoes": 192,
+  "precisao_span": 0.9948,
+  "recall_span": 1.0,
+  "fusao": [
+   {
+    "buraco": 0.0,
+    "so_regras": 1.1,
+    "original": 1.093,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.05,
+    "so_regras": 1.0797,
+    "original": 1.093,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.1,
+    "so_regras": 1.045,
+    "original": 1.093,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.2,
+    "so_regras": 0.9742,
+    "original": 1.093,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.5,
+    "so_regras": 0.7474,
+    "original": 1.093,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 1.0,
+    "so_regras": 0.0,
+    "original": 1.093,
+    "estrita": 1.1
+   }
+  ]
+ },
+ "sintetico_semente_7": {
+  "documentos": 300,
+  "citacoes": 2467,
+  "precisao_span": 0.9948,
+  "recall_span": 1.0,
+  "fusao": [
+   {
+    "buraco": 0.0,
+    "so_regras": 1.1,
+    "original": 1.0995,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.05,
+    "so_regras": 1.0738,
+    "original": 1.0995,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.1,
+    "so_regras": 1.0449,
+    "original": 1.0995,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.2,
+    "so_regras": 0.9831,
+    "original": 1.0995,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.5,
+    "so_regras": 0.7204,
+    "original": 1.0995,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 1.0,
+    "so_regras": 0.0,
+    "original": 1.0995,
+    "estrita": 1.1
+   }
+  ]
+ },
+ "sintetico_semente_424242": {
+  "documentos": 400,
+  "citacoes": 3250,
+  "precisao_span": 0.9936,
+  "recall_span": 1.0,
+  "fusao": [
+   {
+    "buraco": 0.0,
+    "so_regras": 1.1,
+    "original": 1.1,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.05,
+    "so_regras": 1.0727,
+    "original": 1.1,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.1,
+    "so_regras": 1.043,
+    "original": 1.1,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.2,
+    "so_regras": 0.9816,
+    "original": 1.1,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 0.5,
+    "so_regras": 0.7241,
+    "original": 1.1,
+    "estrita": 1.1
+   },
+   {
+    "buraco": 1.0,
+    "so_regras": 0.0,
+    "original": 1.1,
+    "estrita": 1.1
+   }
+  ]
+ }
+}
