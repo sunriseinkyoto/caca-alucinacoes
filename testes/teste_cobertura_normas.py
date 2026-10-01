@@ -102,6 +102,16 @@ def iou(a, b):
     return inter / uni if uni else 0.0
 
 
+def formas_genericas(apelido: str):
+    """Formas numéricas de um diploma fora da tabela acima ('LEI 2848/1940'),
+    para que o teste rode sobre qualquer base no formato do desafio."""
+    esp, resto = apelido.split(" ", 1)
+    num, ano = resto.split("/")
+    milhar = f"{int(num):,}".replace(",", ".")
+    nome = "Lei Complementar" if esp == "LC" else "Lei"
+    return [], [f"da {nome} nº {milhar}/{ano}", f"da {nome} {num}/{ano}"]
+
+
 def verificar(cit: str, res: Resolvedor, classe: str, cid: str | None):
     frase = f"Cumpre observar o disposto no {cit}, de aplicação cogente ao caso."
     alvo = (frase.index(cit), frase.index(cit) + len(cit))
@@ -132,7 +142,7 @@ def main(indice_path: str, detalhe: bool = False) -> bool:
 
     for chave, cid in sorted(indice["leis"].items()):
         apelido, artigo = chave.rsplit("|", 1)
-        sigla, extenso = DIPLOMAS[apelido]
+        sigla, extenso = DIPLOMAS.get(apelido) or formas_genericas(apelido)
         for forma, cit in formas(artigo, sigla, extenso):
             conta(f"lei/{forma}", cit, "real", cid)
         # controle: artigo inexistente no mesmo diploma

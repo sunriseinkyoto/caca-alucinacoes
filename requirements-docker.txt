@@ -1,0 +1,8 @@
+# Ambiente fixado da imagem Docker (ver Dockerfile).
+# O torch é instalado à parte, a partir do índice de CPU do PyTorch.
+regex==2026.9.3
+numpy==2.4.4
+pandas==3.0.2
+transformers==5.16.1
+tokenizers==0.23.2
+safetensors==0.8.0

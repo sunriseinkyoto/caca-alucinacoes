@@ -1,0 +1,8 @@
+.git
+saida
+pred*
+dados/*
+!dados/LEIA-ME.md
+modelo_ner.zip
+ml/dados
+**/__pycache__

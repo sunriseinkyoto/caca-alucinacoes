@@ -52,15 +52,14 @@ DADOS = RAIZ / "dados"
 def construir_indice(base: Path, saida: Path) -> Path:
     versionado = RAIZ / "indice.json"
     if not base.exists():
-        print(f"base canônica não encontrada em {base}; usando o índice versionado")
-        return versionado
+        raise SystemExit(f"base canônica não encontrada: {base}")
     destino = saida / "indice.json"
     indexar.main(str(base), str(destino))
     if versionado.exists():
         igual = filecmp.cmp(destino, versionado, shallow=False)
         print("índice idêntico ao versionado" if igual else
-              "AVISO: o índice construído difere do versionado (base diferente?); "
-              "será usado o índice construído a partir da base informada")
+              "base diferente da amostra de desenvolvimento: será usado o índice "
+              "construído a partir da base informada")
     return destino
 
 
@@ -147,7 +146,8 @@ def main() -> None:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--txt", type=Path, default=DADOS / "txt")
     ap.add_argument("--base", type=Path, default=DADOS / "desafio1_bracis.db")
-    ap.add_argument("--conversor", type=Path, default=DADOS / "json_to_submission.py")
+    ap.add_argument("--conversor", type=Path,
+                    default=RAIZ / "oficial" / "json_to_submission.py")
     ap.add_argument("--saida", type=Path, default=RAIZ / "saida")
     ap.add_argument("--gabarito", type=Path, help="goldenset.csv, para avaliar")
     ap.add_argument("--metrica", type=Path, default=DADOS / "kaggle_metric.py")
@@ -159,7 +159,7 @@ def main() -> None:
         raise SystemExit(f"pasta de documentos não encontrada: {a.txt}")
     if not a.conversor.exists():
         raise SystemExit(f"conversor oficial não encontrado: {a.conversor} "
-                         "(copie json_to_submission.py do material do desafio)")
+                         "(o repositório inclui a cópia oficial em oficial/)")
     a.saida.mkdir(parents=True, exist_ok=True)
 
     indice = construir_indice(a.base, a.saida)

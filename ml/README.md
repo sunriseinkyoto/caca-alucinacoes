@@ -1,15 +1,14 @@
 # Componente de aprendizado de máquina
 
-Este diretório reúne os experimentos com modelos. A submissão principal é
-inteiramente determinística. O rotulador BERTimbau está disponível como
-variante opcional (`python gerar_submissao.py --modelo-ner <pasta>`), com o
-critério de fusão estrito descrito na seção 2. Todos os componentes foram
-avaliados com a métrica oficial.
+Este diretório reúne os experimentos com modelos. O rotulador BERTimbau integra
+a execução final (`run.sh`), com o critério de fusão estrito descrito na seção
+2; os demais componentes são experimentais. Todos foram avaliados com a métrica
+oficial.
 
 | componente | estado | resultado medido |
 |---|---|---|
 | corpus sintético | executado | revelou oito defeitos reais do extrator; é o conjunto de treino do rotulador e a base de `testes/teste_sintetico.py` |
-| rotulador de spans BERTimbau | treinado; variante opcional | P = 0,9948 e R = 1,0000 nos 26 documentos reais, sem nenhum documento real no treino; com a fusão estrita, 1,1000 em qualquer fração de citações perdidas pelas regras, de 0% a 100%, no dev e em 5.717 citações sintéticas inéditas |
+| rotulador de spans BERTimbau | treinado; integra `run.sh` | P = 0,9948 e R = 1,0000 nos 26 documentos reais, sem nenhum documento real no treino; com a fusão estrita, 1,1000 em qualquer fração de citações perdidas pelas regras, de 0% a 100%, no dev e em 5.717 citações sintéticas inéditas |
 | calibração por regressão logística | executado | Brier de 0,0102 para 0,0051; +0,0005 no score |
 | perplexidade do Manacá-1B | implementado, não executado | contribuição máxima nula: o bônus de calibração já está no teto |
 
@@ -133,11 +132,11 @@ Duas conclusões:
    formato de citação desconhecido, a fusão estrita recupera o que elas
    perderam, sem custo quando elas não falham.
 
-A submissão principal permanece determinística, porque a variante com o
-BERTimbau acrescenta dependências (torch, transformers) e os pesos treinados,
-distribuídos à parte, à verificação de reprodutibilidade, sem ganho
-esperado enquanto as regras estiverem completas. Ela está disponível como
-`submission_bert.csv` (`gerar_submissao.py --modelo-ner`).
+Na avaliação final, `run.sh` entrega a variante com o rotulador: com as regras
+completas ela é idêntica à principal, e diante de formatos de citação que as
+regras não reconhecem ela recupera o que elas perderam. Os pesos são baixados do
+Release v1.0, com SHA-256 conferido, na construção da imagem Docker. Sem eles,
+`run.sh` entrega a variante só com regras.
 
 ### Reprodução
 

@@ -359,6 +359,53 @@ NUMERO_OFICIAL = {
     "LEI 13467/2017": ("lei", "13467", "2017"),
     "LEI 9504/1997": ("lei", "9504", "1997"),
 }
+# Diplomas frequentes na jurisprudência que não aparecem na amostra de
+# desenvolvimento. A base da avaliação final é outra: um dispositivo desses
+# diplomas pode constar dela (a citação é `real`) ou não (é `inventada`, como
+# "art. 172 da Lei nº 9.504/1997" no gabarito da amostra). O apelido segue a
+# chave que indexar.py atribui a diplomas sem nome próprio ("LEI 2848/1940"),
+# de modo que o registro é encontrado qualquer que seja a forma citada.
+DIPLOMAS_FREQUENTES = {
+    ("decreto-lei", "2848", "1940"): ["codigo penal", "cp"],
+    ("lei", "5172", "1966"): ["codigo tributario nacional", "ctn"],
+    ("lei", "8069", "1990"): ["estatuto da crianca e do adolescente", "eca"],
+    ("lei", "9503", "1997"): ["codigo de transito brasileiro", "ctb"],
+    ("lei", "7210", "1984"): ["lei de execucao penal", "lep"],
+    ("lei", "11340", "2006"): ["lei maria da penha"],
+    ("lei", "11343", "2006"): ["lei de drogas"],
+    ("lei", "10741", "2003"): ["estatuto do idoso", "estatuto da pessoa idosa"],
+    ("lei", "8429", "1992"): ["lei de improbidade administrativa"],
+    ("lei", "9099", "1995"): ["lei dos juizados especiais"],
+    ("lei", "12016", "2009"): ["lei do mandado de seguranca"],
+    ("decreto-lei", "4657", "1942"): [
+        "lei de introducao as normas do direito brasileiro", "lindb"],
+    ("lei", "7347", "1985"): ["lei da acao civil publica"],
+    ("lei", "11101", "2005"): ["lei de falencias",
+                               "lei de recuperacao judicial e falencias"],
+    ("lei", "8245", "1991"): ["lei do inquilinato"],
+    ("lei", "8906", "1994"): ["estatuto da advocacia", "estatuto da oab"],
+    ("lei", "9605", "1998"): ["lei de crimes ambientais"],
+    ("lei", "6830", "1980"): ["lei de execucao fiscal", "lef"],
+    ("lei", "10826", "2003"): ["estatuto do desarmamento"],
+    ("lei", "9096", "1995"): ["lei dos partidos politicos"],
+    ("lei", "8072", "1990"): ["lei dos crimes hediondos"],
+    ("lei", "9307", "1996"): ["lei de arbitragem"],
+    ("decreto-lei", "1002", "1969"): ["codigo de processo penal militar", "cppm"],
+    ("lei complementar", "35", "1979"): ["lei organica da magistratura nacional",
+                                         "loman"],
+    ("lei complementar", "135", "2010"): ["lei da ficha limpa"],
+    ("lei", "13709", "2018"): ["lei geral de protecao de dados", "lgpd"],
+    ("lei", "12965", "2014"): ["marco civil da internet"],
+    ("lei", "13869", "2019"): ["lei de abuso de autoridade"],
+    ("lei", "6015", "1973"): ["lei de registros publicos"],
+    ("lei", "4717", "1965"): ["lei da acao popular"],
+    ("lei", "13146", "2015"): ["estatuto da pessoa com deficiencia"],
+    ("lei", "12651", "2012"): ["codigo florestal"],
+}
+for (_esp, _num, _ano), _nomes in DIPLOMAS_FREQUENTES.items():
+    _ap = f"{'LC' if _esp == 'lei complementar' else 'LEI'} {_num}/{_ano}"
+    ALIASES_LEI.setdefault(_ap, []).extend(_nomes)
+    NUMERO_OFICIAL.setdefault(_ap, (_esp, _num, _ano))
 for _ap, (_esp, _num, _ano) in NUMERO_OFICIAL.items():
     _especies = [_esp] + (["lc"] if _esp == "lei complementar" else [])
     for _e in _especies:
@@ -513,7 +560,36 @@ def casar_lei(bruto: str):
                 # ("Constituição da República" em vez de "Constituição")
                 if melhor is None or (round(d, 3), -k) < (round(melhor[0], 3), -melhor[2]):
                     melhor = (d, apelido, k)
-    return (melhor[1], melhor[2]) if melhor else None
+    if melhor:
+        return melhor[1], melhor[2]
+    return _casar_lei_numerada(toks)
+
+
+# Qualquer diploma identificado por espécie, número e ano ("Lei nº
+# 12.345/2019", "Decreto-Lei 2.848/40", "LC nº 135/2010") é uma citação com
+# identificador completo, conste ele ou não dos apelidos acima. A chave é a
+# mesma que indexar.py atribui ao diploma: se a base tiver o dispositivo, a
+# citação é `real`; senão, `inventada`. Os dígitos são lidos sem tolerância.
+_RE_LEI_NUMERADA = re.compile(
+    r"(?P<esp>lei complementar|lc|decreto lei|decreto|lei)(?: no| n)? "
+    r"(?P<num>\d{1,3}(?: \d{3})*|\d{1,6})/(?P<ano>\d{4}|\d{2})")
+
+
+def _casar_lei_numerada(toks: list[str]):
+    for k in range(2, min(len(toks), 5) + 1):
+        cand = _norm_lei(" ".join(_ler_numerico(x) for x in toks[:k]))
+        m = _RE_LEI_NUMERADA.fullmatch(cand)
+        if not m:
+            continue
+        ano = m.group("ano")
+        if len(ano) == 2:
+            ano = ("19" if int(ano) > 30 else "20") + ano
+        num = m.group("num").replace(" ", "").lstrip("0")
+        if not num:
+            return None
+        prefixo = "LC" if m.group("esp") in ("lei complementar", "lc") else "LEI"
+        return f"{prefixo} {num}/{ano}", k
+    return None
 
 
 # ==================================================== C) SÚMULAS E TEMAS

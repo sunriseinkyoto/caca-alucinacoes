@@ -198,7 +198,11 @@ def ler_dispositivo(texto):
         if chave in LEI_POR_NUMERO:
             return art, LEI_POR_NUMERO[chave]
         return art, f"LEI {chave}"
-    return art, None
+    # Cabeçalho que nomeia o diploma sem número ("Artigo 121 do Código Penal"):
+    # usa o mesmo casamento de nomes do extrator.
+    from extrair import casar_lei
+    casado = casar_lei(lei)
+    return art, (casado[0] if casado else None)
 
 
 # ----------------------------------------------------------------------- main

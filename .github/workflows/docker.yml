@@ -1,0 +1,29 @@
+# Constrói a imagem do zero e executa run.sh sem acesso à rede, sobre dados
+# mínimos gerados por testes/fixture_docker.py.
+name: docker
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  imagem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Construir a imagem
+        run: docker build -t caca-alucinacoes .
+
+      - name: Criar dados mínimos
+        run: python3 testes/fixture_docker.py criar fixture
+
+      - name: Executar run.sh sem rede
+        run: |
+          mkdir -p saida
+          docker run --rm --network none \
+            -v "$PWD/fixture:/dados:ro" -v "$PWD/saida:/saida" \
+            caca-alucinacoes /dados/base.db /dados/txt /saida
+
+      - name: Conferir a saída
+        run: python3 testes/fixture_docker.py conferir saida/submission.csv --exigir-bert

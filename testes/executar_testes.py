@@ -43,7 +43,7 @@ def teste_desenvolvimento() -> bool:
         pred, csv_ = Path(tmp) / "pred", Path(tmp) / "submission.csv"
         rodar.main(str(DADOS / "txt"), str(RAIZ / "indice.json"), str(pred),
                    str(RAIZ / "templates.json"))
-        subprocess.run([sys.executable, str(DADOS / "json_to_submission.py"),
+        subprocess.run([sys.executable, str(RAIZ / "oficial" / "json_to_submission.py"),
                         str(pred), str(csv_)], check=True, stdout=subprocess.DEVNULL)
         km = avaliar_oficial.carregar_metrica(DADOS / "kaggle_metric.py")
         sol = avaliar_oficial.solution_df(DADOS / "goldenset.csv")
@@ -68,7 +68,7 @@ def teste_indice() -> bool:
 def main() -> None:
     rapido = "--rapido" in sys.argv
     exigir(DADOS / "txt", DADOS / "desafio1_bracis.db", DADOS / "goldenset.csv",
-           DADOS / "kaggle_metric.py", DADOS / "json_to_submission.py")
+           DADOS / "kaggle_metric.py", RAIZ / "oficial" / "json_to_submission.py")
     import teste_codificacao
     import teste_cobertura_base
     import teste_cobertura_normas
