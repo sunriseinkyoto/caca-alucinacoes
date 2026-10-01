@@ -17,8 +17,6 @@ Solução para o desafio **Caça-Alucinações** (BRACIS 2026 × Jusbrasil): loc
 todas as citações de jurisprudência e de lei em documentos jurídicos e classificar
 cada uma como `real`, `inventada` ou `incompleta` contra a base canônica do desafio.
 
-**Autor:** Matheus Vicente Coutinho
-
 ## Resultados
 
 Todos os scores foram obtidos com a métrica oficial (`kaggle_metric.py`), sem
